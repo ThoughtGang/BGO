@@ -1,0 +1,66 @@
+The framework and the command-line toolchain (bin/bgo) work.
+
+Plugin support is very limited. Currently the following plugins work
+(for varying definitions of "work"):
+
+Ident::MagicIdent
+Ident::File1
+Ident::Ascii
+Parser::JavaClass
+Parser::Objdump
+Disasm::Opdis
+Disasm::Opcodes
+Decoder::X86Opcodes
+Toolkit::Bfd
+Toolkit::Metasm
+Generic::DecomposeNumeric
+Generic::Entropy
+
+Functional Example:
+
+  require 'bgo/application/plugin_mgr'
+  require 'bgo/file'
+  require 'bgo/image'
+  require 'bgo/process'
+  require 'bgo/disasm'
+
+  proj = Bgo::Project.new
+
+  # create TargetFile from first argument
+  fname = ARGV.shift
+  f = proj.add_file( fname )
+
+  # create a Process object for TargetFile
+  p = proj.add_process( File.basename(fname), fname )
+
+  # get BFD plugin
+  plugin = Bgo::Application::PluginManager::find('binutils-BFD')
+
+  # Run BFD ident plugin on file
+  f.ident!(plugin)
+
+  # Parse TargetFile contents using BFD
+  f.parse!(plugin)
+
+  # Load TargetFile into Process using BFD
+  plugin.spec_invoke( :load_file, p, f, {} )
+
+  # finished loading with BFD, now try disasm with opcodes
+  plugin = Bgo::Application::PluginManager::find('binutils-opcodes')
+
+  p.maps.each do |m|
+    next if (! m.flags.include? Bgo::Map::FLAG_EXEC)
+    # Create a disassembly task
+    #start_addr, range, output, handler, opts
+    task = Bgo::LinearDisasmTask.new(m.start_addr, nil, {}) 
+
+    addrs = plugin.spec_invoke( :disassemble, task, m ) if m.executable?
+
+    addrs.keys.sort.each do |vma|
+      # do something with each disassembled address
+    end
+  end
+
+
+Historical note: C++ and Python implementations have been discarded in favor
+of the current Ruby implementation.
