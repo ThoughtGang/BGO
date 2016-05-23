@@ -1,22 +1,35 @@
-The framework and the command-line toolchain (bin/bgo) work.
+                             BGO Project Status
+
+The BGO framework is not under active development. The project is being made 
+public on Github in order to demonstrate the ideas behind the core design/ 
+
+
+Currently, the framework and the command-line toolchain (bin/bgo) work.
+
 
 Plugin support is very limited. Currently the following plugins work
 (for varying definitions of "work"):
 
-Ident::MagicIdent
-Ident::File1
-Ident::Ascii
-Parser::JavaClass
-Parser::Objdump
-Disasm::Opdis
-Disasm::Opcodes
-Decoder::X86Opcodes
-Toolkit::Bfd
-Toolkit::Metasm
-Generic::DecomposeNumeric
-Generic::Entropy
+  Ident::MagicIdent
+  Ident::File1
+  Ident::Ascii
+  Parser::JavaClass
+  Parser::Objdump
+  Disasm::Opdis
+  Disasm::Opcodes
+  Decoder::X86Opcodes
+  Toolkit::Bfd
+  Toolkit::Metasm
+  Generic::DecomposeNumeric
+  Generic::Entropy
 
-Functional Example:
+The framework is currently not packaged for use by end users. Be prepared to
+spend some time downloading and installing dependencies in order to get
+very basic functionality.
+
+
+--------------------------------------------------------------------------------
+Framework Example:
 
   require 'bgo/application/plugin_mgr'
   require 'bgo/file'
@@ -62,5 +75,49 @@ Functional Example:
   end
 
 
+--------------------------------------------------------------------------------
+Toolchain Example:
+
+# list commands
+bin/bgo help
+
+# list plugins
+bin/bgo plugin-list
+
+# decode disassembled instructions:
+echo 'xor eax, eax
+nop
+int3
+push eax
+push ebx
+push 0
+call 0x010000
+mov [ebp+4], eax' | bin/bgo decode-insn
+
+# low-level toolchain use: creating address revisions in a memory image 
+# Note that BGO relaces / with ^ in its internal representaton of a filename,
+# and that memory image are identified by their SHA id.
+# NOTE: use of bin/bgo in a GIT repo will result in the repo being detected
+#       as a BGO project unless the following ENV variable is set:
+BGO_DISABLE_PROJECT_DETECT=1 \
+bin/bgo image-create -x 'CC CC CC CC CC CC CC CC' | 
+bin/bgo file-create -i a01baa79948cdcc0d928ab67eff004a3ece60b5c '/tmp/a.out' | 
+bin/bgo file-create -P '^tmp^a.out' -o 1 -s 2 't.bin' | 
+bin/bgo section-create -o 2 -s 4 -n test -i 123 /tmp/a.out | 
+bin/bgo address-create -a 2 -s 1 file/^tmp^a.out | 
+bin/bgo address-create -a 3 -s 1 file/^tmp^a.out | 
+bin/bgo address-create -a 4 -s 2 /file/^tmp^a.out | 
+bin/bgo address-edit -c stuff file/^tmp^a.out/4 | 
+bin/bgo address-delete file/^tmp^a.out/section/123/address/3 | 
+bin/bgo revision-create -c 'different load-base' file/^tmp^a.out/section/123 | 
+bin/bgo address-create -a 3 -s 1 file/^tmp^a.out | 
+bin/bgo address --full file/^tmp^a.out/section/123/revision/1  
+
+See tests/plugins for usage examples of specific plugins, tests/commands/shell
+for usage examples of the BGO toolchain, and tests/utils for examples of
+scripts which create BGO projects using combinations of plugins.
+
+
+--------------------------------------------------------------------------------
 Historical note: C++ and Python implementations have been discarded in favor
 of the current Ruby implementation.

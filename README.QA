@@ -1,0 +1,73 @@
+	  	     	     -= Installing BGO =-
+
+Notes on running BGO from a git repository checkout. See README.DEV for a more
+detailed list of requirements and the installation process.
+
+This has been tested using: 
+OS: Ubuntu 12.04 LTS 
+$ ruby --version ruby 
+1.9.3p0 (2011-10-30 revision 33570) [x86_64-linux]
+
+
+0. Plugin dependencies -
+   a. Opdis
+      git clone git://github.com/mkfs/opdis.git 
+      cd opdis 
+      ./bootstrap 
+      ./configure 
+      make
+      make install
+   - At this point you will have /usr/local/lib/libopdis.so *
+   you will need to put this in your path.  
+   echo "/usr/local/lib" > /etc/ls.so.conf.d/libopdis.conf
+   ldconfig
+   gem install Opdis
+   if unavailable, install 'opdis' gems from 
+      https://github.com/mkfs/opdis-ruby
+      cd opdis && rm *.gem && rake gem && gem install *.gem
+
+   b. libmagic-dev
+   gem install Magic
+   if unavailable, install 'magic' gem from 
+   https://github.com/mkfs/opdis-ruby
+
+   c. file(1)
+      should be provided by the OS
+
+   d. binutils
+      should be installed if not provided by the OS 
+      install 'bfd' and 'opcodes' gems from 
+      https://github.com/mkfs/opdis-ruby
+      cd bfd && rm *.gem && rake gem && gem install *.gem
+      cd opcodes && rm *.gem && rake gem && gem install *.gem
+
+
+1. Check out the sources -
+   git clone git@github.com:ThoughtGang/BGO.git
+
+2. If the symlink CURRENT does nmot exist in the ../BGO/ directory
+   create it as a link to BGO/framework/bgo-rb.
+   ** THIS IS OBSOLETE - framework is now at top-level of repo
+
+3. fix the BGO/CURRENT/dependencies/
+   cd BGO/CURRENT/dependencies/ 
+   rm tg-plugins 
+   git clone git://github.com/ThoughtGang/tg-plugins.git 
+   rm metasm 
+   git clone git://github.com/jjyg/metasm.git
+
+3a. git rm dependencies/metasm
+    git rm dependencies/tg-plugins
+
+    git submodule add git://github.com/ThoughtGang/tg-plugins.git dependencies/tg-plugins
+    git submodule add git://github.com/jjyg/metasm.git dependencies/metasm
+3b. install grit
+    gem install grit
+
+
+
+4. set the variables:
+   cd BGO/CURRENT eval `./test_env.sh`
+
+5. export $RUBYLIB 
+   ** OBSOLETE - this is now performed by test_env.sh

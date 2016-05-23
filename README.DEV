@@ -1,0 +1,191 @@
+                          README (BGO DEVELOPERS)
+
+1. Requirements
+2. Running from a cloned Repo
+3. Command-Line Examples
+4. Commands and Plugins
+5. Directory Structure
+6. Rake Targets
+7. Notes
+
+
+===========================================================================
+REQUIREMENTS
+
+  Ruby >= 1.9.3
+
+  grit (gem install grit)
+
+  tg-plugins (https://github.com/ThoughtGang/tg-plugins)
+  To include as a submodule
+    # from repo top-level dir:
+    bash$ git submodule add https://github.com/ThoughtGang/tg-plugins.git \
+          dependencies/tg-plugins
+    # to update:
+    bash$ cd dependencies/tg-plugins && git pull
+
+
+REQUIREMENTS FOR PLUGINS
+
+  Opdis (gem install Opdis) (requires libopdis:  https://github.com/mkfs/opdis)
+    NOTE: gem can be built in opdis dir of https://github.com/mkfs/opdis-ruby
+
+  Opcodes (gem install Opcodes) (requires Ubuntu binutils-dev package)
+    NOTE: gem can be built in opcodes dir of https://github.com/mkfs/opdis-ruby
+
+  Magic (gem install Magic) (requires Ubuntu libmagic-dev package)
+    NOTE: gem can be built in magic dir of https://github.com/mkfs/opdis-ruby
+
+  BFD (gem install BFD) (requires Ubuntu binutils-dev package)
+    NOTE: gem can be built in bfd dir of https://github.com/mkfs/opdis-ruby
+
+  objdump (supplied in Ubuntu binutils package)
+
+  file (supplied by Ubuntu 'file' package)
+
+  metasm (https://github.com/jjyg/metasm/)
+    # from repo top-level dir:
+    bash$ git submodule add https://github.com/jjyg/metasm.git \
+          dependencies/metasm
+    # to update:
+    bash$ cd dependencies/metasm && git pull
+
+  javaclass (https://bitbucket.org/pkofler/javaclass-rb)
+    * needed to parse Java files
+
+  rubypython (https://github.com/halostatue/rubypython)
+    * not yet needed : provides support for plugins that wrap Python modules
+
+  jruby
+    * not yet needed : provides support for plugins that wrap Java libraries
+
+
+===========================================================================
+RUNNING BGO FROM CLONED REPO
+
+The standard interface to the BGO framework is the bin/bgo program.
+
+To run a standalone BGO Ruby file, prefix the command with "./run_test.sh" in 
+order to configure the environment for the command:
+
+  bash$ ./run_test.sh bin/bgo help
+
+To set up the current environment to run bgo commands, eval the output of the
+the 'test_env.sh' command:
+
+  bash$ eval `./test_env.sh`
+  bash$ bgo help project
+  bash$ bgo project --info -d
+
+
+
+===========================================================================
+COMMAND-LINE EXAMPLES
+
+Show ident strings with confidence level for any number of files:
+
+   bgo ident -lac /tmp/a.out /tmp/data.hex
+
+
+===========================================================================
+COMMANDS AND PLUGINS
+
+The Command and Plugin implementations are two different solutions to the
+same problem.
+
+A Command is a subclass of the Command class, which is executed as a singleton.
+Commands make the class hierarchy more complex, but in the general use-case
+(as a backend to the command-line utility) they are expected to be loaded
+only as needed, and in the more complex-use cases (e.g. Command Pattern
+objects for use in a user interface) they allow for sub-classing and
+instantiation.
+
+Commands are primarily used to add additional verbs to the bin/bgo program.
+
+
+A Plugin is an instance of the Plugin class. This reduces the complexity of
+the class hierarchy, and prevents a Plugin from being loaded more than once:
+the plugin is instantiated when it is defined. This also prevents plugins
+from interfering with each other; a plugin cannot hot-patch a parent class, 
+but can only modify its own instance of the Plugin class.
+
+Plugins are used to arbitrarily extend the capabilities of the BGO framework.
+Anything that is target- or platform-dependent should be implemented as a
+plugin.
+
+
+Commands are in the directory tree lib/bgo/application/commands .
+
+Plugins are in the directory tree lib/bgo/plugins .
+
+Note that both directory trees contain a 'shared' directory with code that is
+shared by one or more Commands/Plugins.
+
+
+
+===========================================================================
+DIRECTORY STRUCTURE
+
+  bin/					Framework cli directory
+  clients/
+  lib/					Framework module directory
+  lib/bgo				Framework and Data Model
+  lib/bgo/application			Application services
+  lib/bgo/application/commands		BGO cli Command objects
+  lib/bgo/application/commands/shared   Classes shared by cli Command objects
+  lib/bgo/application/git		GitDS-based datastore
+  lib/bgo/datatype			Data Model primitive datatypes
+  lib/bgo/metadata			Data Model metadata (insn, reg, etc)
+  lib/bgo/plugins			Framework Plugin Objects
+  lib/bgo/plugins/shared		Classes shared by Plugin objects
+  tests/
+  ui/
+  utils/
+
+
+UTILITIES
+
+  bin/bgo			the BGO cli application
+  bin/bgo_env			eval this to set env variables
+  bin/bgo_set_project		eval this to set current project
+  run_test.sh			run a ruby file with RUBYLIB set
+  test_env.sh			eval this file to set RUBYLIB
+
+Note: Running bgo_env currently has no effect
+
+
+
+===========================================================================
+RAKE TARGETS
+
+Basic targets
+	gem		Generate a gem in ./pkg
+	rdoc		Build rdoc documentation in ./doc/html
+	repo-gen	Build example repositories in ./tests/repos
+	test		Run standard unit tests
+
+Extended test targets
+	test-all	Run all (exhaustive) unit tests (release testing)
+	test-single	Run a single unit test [specified in rakefile]
+	test-plugins	Run unit tests for plugins
+	test-commands	Run unit tests for commands
+	test-model	Run unit tests for the core data model
+	test-git	Run unit tests for the GitDS-based datastore
+	test-bgo	Run unit tests for the core BGO framework
+	# NOTE: The *-api tasks interfere with all other unit tests
+	test-plugin-api	 Unit tests for Plugin definition
+	test-command-api Unit tests for Command definition
+
+
+
+Notes
+-----
+
+* Generating a Project for testing
+  The command tests/utils/gen_test_project.sh will generate a BGO project for
+  testing. It must be run from the top-level directory of the repo. 
+  Example:
+    bash$ eval `./test_env.sh`
+    bash$ tests/utils/gen_test_project.sh test_project.bgo
+  This will create the project 'test_project.bgo' and fill it with test data.
+
