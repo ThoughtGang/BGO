@@ -1,0 +1,19 @@
+Fri May 24 11:41:40 EDT 2013
+
+armbin   		Arm Binary (Android NDK compatible).
+a_shell32		Shellcode for local shell, i686
+hello.net.exe		.NET version of hello world.exe
+HelloWorld.class	Hello world, Java class.
+HelloWorld.jar		Hello world, Java jar.
+iOS.bin			iOS ARM binary
+linux-2.6.x-64.bin
+linux-2.6.x-64.so
+llvmbin
+shellcode32		More complex i686 shellcode
+ten_nulls.dat
+
+TODO:
+Dalvik code
+IBM Aix
+MipsEL
+

@@ -25,11 +25,36 @@ of these external anaysis tools.
 # Features
 
 * scriptable in Ruby
-* extensible, plugin-base architecture
+* extensible, plugin-based architecture
 * Git-backed projects for version control and distributed collaboration
+* an object model for binary code and data objects
 * JSON serialization
 * access to Java classes (and JARs) via jruby 
 * "layer"-based representation of memory addresses to accomodate different interpretations of code and data, or changes to code and data over time
+
+
+# Binary Objects
+A 'binary' object refers to a collection of bytes which may contain code, data,
+a mixture of code and data, or metadata for another binary object.
+
+The following are examples of binary objects:
+
+  * a binary data file such as a PNG
+  * an ASCII text file
+  * an executable file, such as an ELF or PE program
+  * a shared object file, such as a DLL or .so
+  * an unlinked object file
+  * an archive file, such as a ZIP or AR file
+  * a disk image
+  * a network packet
+  * a boot sector
+  * a "snapshot" of CPU registers and memory contents
+  * a control-flow trace of a process
+  * a trace of the heap usage for a process
+  * a trace of system calls invoked by a process
+
+BGO provides an object model for managing these objects. The objects themselves
+are loaded into the object model by plugins.
 
 
 # Examples

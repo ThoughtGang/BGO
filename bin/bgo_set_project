@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# Copyright 2012 Thoughtgang <http://www.thoughtgang.org>
+# Example:  eval `bin/bgo_set_project test.bgo`
+
+proj_name = ARGV.join(' ')
+# TODO: any post-processing
+
+# puts shell command for setting project
+puts "BGO_PROJECT=#{proj_name}" if ! (proj_name.empty?)

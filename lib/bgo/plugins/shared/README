@@ -1,0 +1,3 @@
+Directory for Ruby modules shared among plugins.
+
+Plugins placed in this directory will not be detected by the Plugin Manager.

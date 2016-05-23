@@ -1,0 +1,24 @@
+				BGO UNIT TESTS
+
+Any file beginning with 'ut_' is a unit test executed automatically by the
+Rakefile, and must always pass.
+
+Ruby scripts without the ut_ prefix are either obsolete/incomplete unit tests,
+or helper scripts.
+
+The following directories contain subsystem-specific unit tests:
+
+	commands	- tests for the bin/bgo utility commands
+	git		- tests for the Git-backed BGO data model
+	integration	- tests of the integration of software components
+	model		- tests for the BGO data model
+	plugin_api	- tests for the BGO Plugin API
+	plugins		- tests for specific plugins
+	system		- end-to-end ('system') tests (platform-specific)
+
+The following directories contain supporting scripts or data:
+
+	repos	- temp directory where Git repos are created during unit testing
+	shared	- ruby modules shared by multiple unit tests
+	targets	- binary files used as targets by unit tests
+	utils 	- misc ruby utilities used when writing tests

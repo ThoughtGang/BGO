@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+# Copyright 2012 Thoughtgang <http://www.thoughtgang.org>
+
+# TODO: set environment variable
+varname = ARGV[0]
+puts "#{varname}=#{STDIN.gets.chomp}"

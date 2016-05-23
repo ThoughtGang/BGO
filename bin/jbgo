@@ -1,0 +1,20 @@
+#!/usr/bin/end jruby
+# Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
+# Executable for running BGO in JRuby
+
+raise ScriptError.new("jbgo requires JRuby") unless RUBY_PLATFORM =~ /java/
+
+load File.join(File.dirname(__FILE__), 'bgo')
+
+if __FILE__ == $0
+  opts = get_options(ARGV)
+
+  if opts.early_exit
+    show_usage if opts.show_usage
+    show_version if opts.show_version
+    exit -1
+  end
+
+  app = CommandLineApplication.new(opts)
+  app.run(ARGV)
+end 

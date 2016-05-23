@@ -1,0 +1,17 @@
+#!/bin/sh
+# Show the contents of an object (BLOB or Tree) at a specified path in the repo
+# Copyright 2011 Thoughtgang <http://www.thoughtgang.org>
+
+if [ $# -eq 0 ]
+then
+	echo "Usage: $0 PATH"
+	exit 1
+fi
+
+for path in $*
+do
+	echo $path :
+	SHA=`git-path-to-sha $path`
+	git show $SHA
+	echo
+done

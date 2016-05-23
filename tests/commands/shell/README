@@ -1,0 +1,6 @@
+Shell scripts for running BGO commands in a pipeline.
+
+These primarily serve as examples for unit tests and general usage.
+
+These scripts are used during development to ensure that commands function as
+expected

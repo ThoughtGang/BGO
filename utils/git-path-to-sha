@@ -1,0 +1,16 @@
+#!/bin/sh
+# Return the SHA for an arbitrary path in the repo
+# Copyright 2011 Thoughtgang <http://www.thoughtgang.org>
+
+if [ $# -eq 0 ]
+then
+	echo "Usage: $0 PATH [PATH...]"
+	exit 1
+fi
+
+for path in $*
+do
+	SHA=`git ls-tree HEAD $path | cut -d ' ' -f 3 | cut -f 1`
+	[ -n "$SHA" ] && echo $SHA || echo "Path not found in repo: $path"
+done
+

@@ -1,0 +1,175 @@
+#!/usr/bin/env ruby
+# BGO Command Line Utility
+# Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
+
+# Add ../lib to module path
+$: << File.join(File.dirname(File.dirname(__FILE__)), 'lib')
+
+require 'bgo/application'
+require 'bgo/application/command'
+require 'bgo/version'
+
+
+BGO_CLI_VERSION = '0.3.1'
+
+class CommandLineApplication
+  include Bgo::Application
+
+  def initialize(opts)
+    use ConfigManager
+
+    @plugins_loaded = false
+
+    Bgo::Application::Service.init_services
+
+    # Note: this currently has no settings
+    Bgo::Application::ConfigManager.read_config('bgo-cli')
+
+    load_plugins if opts.preload_plugins
+
+    @interactive = opts.interactive
+  end
+
+=begin rdoc
+Initialize PluginManager service and load all plugins.
+
+Note: Most applications (e.g. GUIs) will load the PluginManager along with
+all other services. The toolchain is special in that a particular command can
+specfiy that plugins NOT be loaded (for performance reasons and so forth).
+=end
+  def load_plugins
+    return if @plugins_loaded
+    Bgo::Application::PluginManager.init
+    Bgo::Application::PluginManager.startup(self)
+    @plugins_loaded = true
+  end
+
+=begin rdoc
+Run the BGO cli application.
+
+The first argument is the command name; all subsequent arguments are passed
+to the command.
+
+This method exits the cli application and sets the process exit status to that 
+of the command.
+=end
+  def run(argv)
+    Bgo::Application::Service.startup_services(self)
+
+    rv = 0
+    if @interactive
+      run_interactive
+    else
+      cmd_name = argv.shift
+      cmd = get_command cmd_name
+      rv = cmd ? run_command( cmd, argv ) : -1
+    end
+
+    Bgo::Application::Service.shutdown_services(self)
+    exit rv
+  end
+
+  def run_interactive
+    # TODO: shell
+    raise "Interactive shell not implemented"
+  end
+
+=begin rdoc
+Fetch the Command object corresponding to cmd_name.
+
+This looks in the Command directories first, then loads all plugins and checks
+for commands that have been defined by a Plugin. The Plugins could be loaded 
+before the initial check, but then every command (e.g. 'echo', 'help') would 
+require starting the PluginManager.
+=end
+  def get_command( cmd_name )
+    begin
+      # 1. Try all normal commands
+      Bgo::Application::Command.load_single(cmd_name)
+
+    rescue Bgo::Application::CommandNotFoundError => e
+      if ! @plugins_loaded
+        # 2. Load plugins & retry (allows plugins to define commands)
+        load_plugins
+        get_command cmd_name
+
+      else
+        # Error: Command really not found!
+        puts "Command '#{cmd_name}' not found: #{e}. Try `#{$0} help`."
+        nil
+      end
+    end
+  end
+
+=begin rdoc
+Run the Bgo Command object with the specified arguments.
+
+Note: this starts the PluginManager if the command requires plugins.
+=end
+  def run_command( cmd, args )
+    begin
+      load_plugins if ((cmd.requires_plugins?) && ! @plugins_loaded)
+      # TODO: any additional, optional services (e.g GitDS) should be loaded
+      cmd.invoke(args) ? 0 : 1
+    rescue Bgo::Application::CommandError => e
+      # Error raised by the command itself (usually bad arguments)
+      puts e.message
+      -2
+    end
+  end
+
+end
+
+# ----------------------------------------------------------------------
+
+def get_options(argv)
+  options = OpenStruct.new
+
+  options.early_exit = false
+  options.preload_plugins = false
+  options.interactive = false
+  options.show_version = false
+  options.show_usage = (argv.length == 0)
+
+  while (argv[0] && (argv[0].start_with? '-'))
+    opt = argv.shift
+    case opt
+    when '-p', '--preload', '--preload-plugins'
+      options.preload_plugins = true
+    when '-i', '--interactive'
+      options.interactive = true
+    when '-v', '--version'
+      options.show_version = true
+    when '-h', '-?', '--help'
+      options.show_usage = true
+    else
+      $stderr.puts "Unrecognized bgo option '#{opt}'"
+    end
+  end
+
+  options.early_exit = true if options.show_usage || options.show_version
+  options
+end
+
+def show_usage
+  puts "Usage: #{$0} [-pihv] command [args]"
+  puts "Try 'bgo help' or 'bgo help target-disasm'."
+end
+
+def show_version
+  puts "BGO application: #{BGO_CLI_VERSION}"
+  puts "BGO framework:   #{Bgo::VERSION}"
+end
+
+if __FILE__ == $0
+  opts = get_options(ARGV)
+
+  if opts.early_exit
+    show_usage if opts.show_usage
+    show_version if opts.show_version
+    exit -1
+  end
+
+  app = CommandLineApplication.new(opts)
+  app.run(ARGV)
+end
