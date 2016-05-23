@@ -1,0 +1,9 @@
+[submodule "dependencies/tg-plugins"]
+	path = dependencies/tg-plugins
+	url = git://github.com/ThoughtGang/tg-plugins.git
+[submodule "dependencies/metasm"]
+	path = dependencies/metasm
+	url = git://github.com/jjyg/metasm.git
+[submodule "dependencies/grit"]
+	path = dependencies/grit
+	url = git://github.com/mojombo/grit.git
