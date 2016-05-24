@@ -59,7 +59,7 @@ are loaded into the object model by plugins.
 
 # Examples
 
-See README.STATUS and README.COMMAND for examples of using the framework and
+See README.STATUS and README.COMMAND for examples of using the framework and 
 the CLI.
 
 
@@ -372,6 +372,31 @@ for its plugin system.
 
 All of the core functionality is implemented in plugins; the framework itself
 simply provides project management and a data model.
+
+The following Plugin interfaces are defined:
+ - analysis : Analyze the target, returning an AnalysisResults object
+ - decode_insn : Generate an Instruction object from a disassembled instruction (String)
+ - disassemble : Disassemble the target, creating Address and Instruction objects for each instruction. Takes a DisasmTask to determine the algorithm, and uses a decoder plugin for the ISA to create the Instruction object
+ - ident
+ - export : Export data from BGO to a plugin-defined file format
+ - import : Import data to BGO from a plugin-defined file format
+ - ident : Identify the type of a file or String of bytes
+ - load : Create memory maps for a Process object based on an executable file format (e.g. ELF)
+ - load_target : This loads one or more object files into a Process, then performs a disassembly on all entrypoints and (function) symbols in the Process. Performs the operations of load and disassemble plugins, and is generally provided by plugins for 3rd-party applications which perform the entire load-parse-disassemble cycle themselves, such as Metasm or IDA. Can also be used by an application to automate frequently-used combinations of load and disassemble plugins.
+ - parse_file : Create sections for a TargetFile object based on an executable file format (e.g. ELF).
+ - target : Add targets into a Project and perform analysis on them. The actions taken are determined by the plugin, and should be general (e.g. ident, parse, and load an executable file). This is used by applications to automate commonly-used analyses.
+ - unpack : Unpack an Image object to a new Image object. Used to convert compressed or encrypted Images to plaintext.
+   
+
+unpack
+parse
+load
+target
+export
+analysis
+
+
+
 
 
 # License
