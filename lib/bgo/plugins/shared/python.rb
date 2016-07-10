@@ -8,6 +8,30 @@ Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 require 'rubygems'
 require "rubypython"
 
+# first, fix RubyPython
+class RubyPython::Interpreter
+  alias :find_python_lib_orig :find_python_lib
+
+  def find_python_lib
+    @libbase = "#{::FFI::Platform::LIBPREFIX}#{@version_name}"
+    @libext = ::FFI::Platform::LIBSUFFIX
+    @libname = "#{@libbase}.#{@libext}"
+
+    # python-config --confdir provides location of .so 
+    config_util = "#{version_name}-config"
+    confdir = %x(#{config_util} --configdir).chomp
+
+    library = File.join(confdir, @libname)
+    if (File.exist? library)
+      @locations = [ library ]
+    else
+      library = find_python_lib_orig
+    end
+
+    library
+  end
+end
+
 module Bgo
   module Plugins
 
