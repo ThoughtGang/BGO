@@ -8,7 +8,7 @@ Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 NOTE: This requires the javaclass gem. See http://code.google.com/p/javaclass-rb
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 require 'bgo/file'
 require 'bgo/file_format'
@@ -26,7 +26,7 @@ module Bgo
 Plugin for using the Javaclass gem inside BGO.
 =end
       class Javaclass
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         Bgo::FileFormat.supports 'Java Class'
 

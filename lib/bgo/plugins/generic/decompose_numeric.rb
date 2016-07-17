@@ -7,7 +7,7 @@ interpretations (byte, short, hword, word, float, double).
 Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 require 'bgo/ident'
 
 module Bgo
@@ -15,7 +15,7 @@ module Bgo
     
     module Generic
       class DecomposeNumeric
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         # ----------------------------------------------------------------------
         # DESCRIPTION

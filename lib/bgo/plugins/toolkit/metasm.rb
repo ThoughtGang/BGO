@@ -11,7 +11,7 @@ NOTE: This requires the metasm framework from https://github.com/jjyg/metasm/
 # TODO: basic blocks: create in BGO
 # TODO: tag entry points as such
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 require 'bgo/file'
 require 'bgo/map'
@@ -40,7 +40,7 @@ NOTE: currently this requires calling Metasm::AutoExe.decode_file in every
       Might need metasm-ident properties for BGO ModelItems.
 =end
       class Metasm
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         Bgo::FileFormat.supports 'ELF', 'COFF', 'Java Class', 'CORE', 'MachO'
 
@@ -305,7 +305,6 @@ Ruby module path.'
           'ia32' => 'x86',
           'ia32_be' => 'x86',
           'ia32_16' => 'x86',
-          'ia32_be' => 'x86',
           'x64' => 'x86-64',
           'x64_be' => 'x86-64'
         }

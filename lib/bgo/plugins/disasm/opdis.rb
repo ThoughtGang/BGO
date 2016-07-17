@@ -13,7 +13,7 @@ http://freecode.com/projects/opdis
 =end
 
 # TODO: DisasmTasks for BFD symbols, etc.
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 require 'bgo/map'
 require 'bgo/section'
@@ -26,7 +26,7 @@ module Bgo
     module Disasm
 
       class Opdis
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         # ----------------------------------------------------------------------
         # DESCRIPTION

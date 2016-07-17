@@ -6,7 +6,7 @@ Specification for disassembler plugins
 Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 require 'bgo/disasm'
 require 'bgo/address_container'
@@ -21,7 +21,7 @@ module Bgo
       # Input: Bgo::DisasmTask, Bgo::AddressContainer
       # Output: Hash of disassembled addresses (from DisasmTask#output)
       # FIXME: there is no need to return the output of the DisasmTask
-      TG::Plugin::Specification.new( :disassemble, 
+      Bgo::Specification.new( :disassemble, 
                                     'fn(DisasmTask, AddressContainer)',
                                      [Bgo::DisasmTask, Bgo::AddressContainer], 
                                      [Hash]

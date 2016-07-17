@@ -5,14 +5,14 @@ Test plugin to ensure that PluginManager is working.
 (c) Copyright 2012 Thoughtgang <http://www.thoughtgang.org>
 =end
  
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 module Bgo
   module Plugins
     module Test
 
       class TestPlugin
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         name 'test-echo'
         author 'dev@thoughtgang.org'

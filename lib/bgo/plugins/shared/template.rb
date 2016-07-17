@@ -6,7 +6,7 @@ BGO Template file for creating plugins
 Copyright 2012 Thoughtgang <http://www.thoughtgang.org>
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 module Bgo
   module Plugins
@@ -16,7 +16,7 @@ module Bgo
 Plugin docstring.
 =end
       class APlugin
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         # ----------------------------------------------------------------------
         # DESCRIPTION

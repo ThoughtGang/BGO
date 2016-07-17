@@ -8,7 +8,7 @@ Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 A binary file loader plugin based on libbfd (part of GNU binutils)
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 require 'bgo/map'
 require 'bgo/section'
 require 'bgo/file_format'
@@ -23,7 +23,7 @@ module Bgo
     module Toolkit
 
       class Bfd
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         class InvalidBfdError < RuntimeError; end
 

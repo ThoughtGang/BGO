@@ -9,7 +9,7 @@ A data identification plugin based on the UNIX file(1) command.
 =end
 
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 require 'bgo/ident'
 require 'bgo/plugins/shared/ident/magic'
 require 'bgo/plugins/shared/tempfile'
@@ -23,7 +23,7 @@ module Bgo
     module Ident
   
       class File1
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         # ----------------------------------------------------------------------
         # DESCRIPTION

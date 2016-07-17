@@ -11,7 +11,7 @@ Assumes the instructions have been disassembled by libopcodes, i.e. a string
 in AT&T or Intel syntax.
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 require 'bgo/instruction'
 require 'bgo/plugins/shared/isa/x86'
 
@@ -20,7 +20,7 @@ module Bgo
     module Decoder
 
       class X86Opcodes
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         # ----------------------------------------------------------------------
         # DESCRIPTION

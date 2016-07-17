@@ -9,7 +9,7 @@ Determine byte entropy of a String, Array, or IO object. Can be used to
 distinguish between code and data contents.
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 require 'bgo/ident'
 
 # TODO: * information gain (info_gain) method that calls entropy()
@@ -30,7 +30,7 @@ module Bgo
 Calculate Byte Entropy for Binary data or Arrays of Fixnums.
 =end
       class Entropy
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         # ----------------------------------------------------------------------
         # DESCRIPTION

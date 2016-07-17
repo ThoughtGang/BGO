@@ -9,7 +9,7 @@ A data identification plugin based on libmagic.
 NOTE: This requires the Magic gem from https://rubygems.org/gems/Magic .
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 require 'bgo/ident'
 require 'bgo/plugins/shared/ident/magic'
 
@@ -22,7 +22,7 @@ module Bgo
     module Ident
 
       class MagicIdent
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         # ----------------------------------------------------------------------
         # DESCRIPTION

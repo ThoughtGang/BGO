@@ -6,7 +6,7 @@ Specification for exporting BGO data to a file
 Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 require 'bgo/project'
 
@@ -19,7 +19,7 @@ module Bgo
       #       to instantiate and serialize.
       # Input: String, Bgo::Project, Hash of plugin-specific options
       # Output: Boolean
-      TG::Plugin::Specification.new( :export, 
+      Bgo::Specification.new( :export, 
                                     'fn(Filename, Project, Hash)',
                                      [String, Bgo::Process, Hash], 
                                      [[TrueClass, FalseClass]]

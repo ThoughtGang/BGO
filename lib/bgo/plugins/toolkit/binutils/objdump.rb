@@ -10,7 +10,7 @@ A binary file loader plugin based on objdump (part of GNU binutils)
 NOTE: This requires the GNU binutils objdump utility
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 require 'bgo/file'
 require 'bgo/file_format'
@@ -40,7 +40,7 @@ module Bgo
     module Parser
 
       class Objdump
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         Bgo::FileFormat.supports 'ELF', 'AOUT', 'CORE'
 

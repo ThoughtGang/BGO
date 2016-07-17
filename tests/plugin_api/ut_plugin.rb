@@ -32,7 +32,7 @@ A_DESCR = 'A plugin'
 A_HELP = 'Some help available'
 
 class PluginA
-  extend TG::Plugin
+  extend Bgo::Plugin
 
   name A_NAME
   author A_AUTHOR
@@ -69,7 +69,7 @@ B_DESCR = 'B plugin'
 B_HELP = 'no help available'
 
 class PluginB
-  extend TG::Plugin
+  extend Bgo::Plugin
 
   name B_NAME
   author B_AUTHOR
@@ -86,7 +86,7 @@ end
 
 # should pass dependency
 class PluginC
-  extend TG::Plugin
+  extend Bgo::Plugin
 
   name 'Pass C'
   version '1.0'
@@ -96,7 +96,7 @@ end
 
 # should fail dependency
 class PluginD
-  extend TG::Plugin
+  extend Bgo::Plugin
 
   name 'Fail D'
   version '1.0'
@@ -105,7 +105,7 @@ end
 
 # should fail dependency
 class PluginE
-  extend TG::Plugin
+  extend Bgo::Plugin
 
   name 'Fail E'
   version '1.0'
@@ -114,7 +114,7 @@ end
 
 # should fail dependency
 class PluginF
-  extend TG::Plugin
+  extend Bgo::Plugin
 
   name 'Fail F'
   version '1.0'
@@ -126,28 +126,28 @@ class TC_ApiDevTest < Test::Unit::TestCase
 
   def test_plugin
     # Specifications used by plugins
-    u_spec = TG::Plugin::Specification.new(SPEC_UNARY, SPEC_UNARY_PROTO,
+    u_spec = Bgo::Specification.new(SPEC_UNARY, SPEC_UNARY_PROTO,
                                               SPEC_UNARY_IN, SPEC_UNARY_OUT)
 
-    assert_equal(u_spec, TG::Plugin::Specification.specs[SPEC_UNARY])
+    assert_equal(u_spec, Bgo::Specification.specs[SPEC_UNARY])
     assert_equal(u_spec.name, SPEC_UNARY)
     assert_equal(u_spec.proto, SPEC_UNARY_PROTO)
     assert_equal(u_spec.input, SPEC_UNARY_IN)
     assert_equal(u_spec.output, SPEC_UNARY_OUT)
 
-    b_spec = TG::Plugin::Specification.new(SPEC_BINARY, SPEC_BINARY_PROTO,
+    b_spec = Bgo::Specification.new(SPEC_BINARY, SPEC_BINARY_PROTO,
                                               SPEC_BINARY_IN, SPEC_BINARY_OUT)
 
-    assert_equal(b_spec, TG::Plugin::Specification.specs[SPEC_BINARY])
+    assert_equal(b_spec, Bgo::Specification.specs[SPEC_BINARY])
     assert_equal(b_spec.name, SPEC_BINARY)
     assert_equal(b_spec.proto, SPEC_BINARY_PROTO)
     assert_equal(b_spec.input, SPEC_BINARY_IN)
     assert_equal(b_spec.output, SPEC_BINARY_OUT)
 
     # Plugin A
-    assert(TG::Plugin.available_plugins.include? PluginA)
+    assert(Bgo::Plugin.available_plugins.include? PluginA)
     a = PluginA.new
-    assert_equal(TG::Plugin.available_plugins.select { |x| x == PluginA 
+    assert_equal(Bgo::Plugin.available_plugins.select { |x| x == PluginA 
                                                         }.first, a.class)
     assert_equal(A_NAME, a.name)
     assert_equal(A_AUTHOR, a.author)
@@ -180,19 +180,19 @@ class TC_ApiDevTest < Test::Unit::TestCase
 
     assert_equal( 6, (a.spec_invoke(SPEC_UNARY, 5)) )
     assert_equal( 5, (a.spec_invoke(SPEC_BINARY, 2, 3)) )
-    assert_raises(TG::Plugin::InvalidSpecificationError) {
+    assert_raises(Bgo::Plugin::InvalidSpecificationError) {
       a.spec_invoke(:fake_spec, 0)
     }
-    assert_raises(TG::Plugin::ArgumentTypeError) {
+    assert_raises(Bgo::Plugin::ArgumentTypeError) {
       a.spec_invoke(SPEC_UNARY, false)
     }
-    assert_raises(TG::Plugin::ArgumentTypeError) {
+    assert_raises(Bgo::Plugin::ArgumentTypeError) {
       a.spec_invoke(SPEC_BINARY, 1)
     }
 
-    assert(TG::Plugin.available_plugins.include? PluginB)
+    assert(Bgo::Plugin.available_plugins.include? PluginB)
     b = PluginB.new
-    assert_equal(TG::Plugin.available_plugins.select { |x| x == PluginB 
+    assert_equal(Bgo::Plugin.available_plugins.select { |x| x == PluginB 
                                                         }.first, b.class)
     # Plugin B
 
@@ -202,7 +202,7 @@ class TC_ApiDevTest < Test::Unit::TestCase
     assert_equal(B_DESCR, b.descr)
     assert_equal(B_HELP, b.help)
     
-    assert_raises(TG::Plugin::ArgumentTypeError) {
+    assert_raises(Bgo::Plugin::ArgumentTypeError) {
       b.spec_invoke(SPEC_UNARY, 1)
     }
   end

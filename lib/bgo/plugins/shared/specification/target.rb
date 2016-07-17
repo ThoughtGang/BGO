@@ -16,7 +16,7 @@ entirely. The user should always specify which plugin to use with :load_target,
 and never rely on the default.
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 module Bgo
   module Plugin
@@ -28,7 +28,7 @@ module Bgo
       # Input: Bgo::Project, String|Array of Strings (file paths), 
       #        Hash of plugin-specific options
       # Output: Success (true) or failure (false)
-      TG::Plugin::Specification.new( :load_target, 
+      Bgo::Specification.new( :load_target, 
                                     'fn(Project, String path|Array, Hash)',
                                      [Bgo::Project, [String, Array], Hash], 
                                      [ [TrueClass, FalseClass] ]

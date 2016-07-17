@@ -6,7 +6,7 @@ Specification for file parser plugins
 Copyright 2012 Thoughtgang <http://www.thoughtgang.org>
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 require 'bgo/file'
 
 module Bgo
@@ -19,7 +19,7 @@ module Bgo
       # NOTE: This modifies the TargetFile input object by creating Sections
       #       and Symbols. The return value is used only to check the result.
       # TODO: replace return value with Bgo::ParseResults object?
-      TG::Plugin::Specification.new( :parse_file, 'fn(TargetFile|Packet, Hash)',
+      Bgo::Specification.new( :parse_file, 'fn(TargetFile|Packet, Hash)',
                                      [[Bgo::TargetFile, Bgo::Packet], Hash], 
                                      [Hash] 
                                     )

@@ -6,12 +6,13 @@ BGO Plugin Manager
 Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 =end
 
-require 'tg/plugin.rb'
-require 'tg/plugin_mgr.rb'
-#require 'bgo/plugins/shared/specification'
 require 'bgo/application'
 require 'bgo/application/config'
 require 'bgo/application/service'
+
+require 'bgo/application/plugin'
+#require 'bgo/plugins/shared/specification'
+require 'tg/plugin_mgr.rb'
 
 module Bgo
 
@@ -53,6 +54,7 @@ that are not blacklisted.
         @initialized = true
       end
 
+      CONF_NAME = 'plugins'
 =begin rdoc
 Read configuration for plugins from Application config.
 =end

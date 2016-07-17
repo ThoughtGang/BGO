@@ -6,7 +6,7 @@ Specification for importing data into BGO
 Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 require 'bgo/project'
 
@@ -17,7 +17,7 @@ module Bgo
       # Import data into BGO from a File
       # Input: String, Bgo::Project, Hash of plugin-specific options
       # Output: Boolean
-      TG::Plugin::Specification.new( :import, 
+      Bgo::Specification.new( :import, 
                                     'fn(Filename, Project, Hash)',
                                      [String, Bgo::Process, Hash], 
                                      [[TrueClass, FalseClass]]

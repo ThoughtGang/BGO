@@ -8,7 +8,7 @@ Copyright 2012 Thoughtgang <http://www.thoughtgang.org>
 This serves as a failsafe Ident plugin, in case all others fail.
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 require 'bgo/ident'
 
 module Bgo
@@ -16,7 +16,7 @@ module Bgo
     module Ident
 
       class Ascii
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         # ----------------------------------------------------------------------
         # DESCRIPTION

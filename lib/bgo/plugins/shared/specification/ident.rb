@@ -7,7 +7,7 @@ Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 =end
 
 require 'stringio'
-require 'tg/plugin'
+require 'bgo/application/plugin'
 require 'bgo/ident'
 
 module Bgo
@@ -20,7 +20,7 @@ module Bgo
       #        to use the buffer, path, or both in doing the ident lookup.
       # Note: A StringIO will fail this test.
       # Output: an Ident object
-      TG::Plugin::Specification.new( :ident, 'fn(String|IO, String)',
+      Bgo::Specification.new( :ident, 'fn(String|IO, String)',
                                      [[String, IO], String], [Bgo::Ident] 
                                     )
     end

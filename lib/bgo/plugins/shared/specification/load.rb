@@ -6,7 +6,7 @@ Specification for file loader plugins
 Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 require 'bgo/file'
 require 'bgo/process'
@@ -23,7 +23,7 @@ module Bgo
       # NOTE: load_file plugins should always invoke Process#add_map_reloc
       #       instead of Process#add_map, unless they want to do their own
       #       rebasing of overlapping Map objects.
-      TG::Plugin::Specification.new( :load_file, 
+      Bgo::Specification.new( :load_file, 
                                     'fn(Process, TargetFile|Packet, Hash)',
                                      [Bgo::Process, 
                                      [Bgo::TargetFile, Bgo::Packet], Hash], 
@@ -42,7 +42,7 @@ module Bgo
       #        Hash of plugin-specific options
       # Output: Hash { :arch_info, :maps, :images, :symbols }
       # TODO: replace with Bgo::LoadResults object?
-      TG::Plugin::Specification.new( :load_target, 
+      Bgo::Specification.new( :load_target, 
                                     'fn(Process, Array[TargetFile], Hash)',
                                      [Bgo::Process, Array, Hash], 
                                      [Hash]

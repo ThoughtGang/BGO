@@ -8,7 +8,7 @@ Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 A disassembler plugin based on libopcodes (part of GNU binutils)
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 require 'bgo/file'
 require 'bgo/map'
@@ -33,7 +33,7 @@ module Bgo
     module Disasm
 
       class Opcodes
-        extend TG::Plugin
+        extend Bgo::Plugin
 
         # ----------------------------------------------------------------------
         # DESCRIPTION

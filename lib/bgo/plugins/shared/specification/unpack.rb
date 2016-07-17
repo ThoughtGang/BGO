@@ -6,7 +6,7 @@ Specification for unpacker plugins
 Copyright 2013 Thoughtgang <http://www.thoughtgang.org>
 =end
 
-require 'tg/plugin'
+require 'bgo/application/plugin'
 
 require 'bgo/image'
 
@@ -17,7 +17,7 @@ module Bgo
       # Unpack an Image to a new Image object
       # Input: Bgo::Image, Hash of plugin-specific options
       # Output: Bgo::Image if successfully unpacked, or nil
-      TG::Plugin::Specification.new( :unpack, 'fn(Image, Hash)',
+      Bgo::Specification.new( :unpack, 'fn(Image, Hash)',
                                      [Bgo::Image, Hash],
                                      [ [Bgo::Image, NilClass] ]
                                     )
